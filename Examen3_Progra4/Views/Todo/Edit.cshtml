@@ -1,0 +1,67 @@
+﻿@model Examen3_Progra4.Models.todoEstructure
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit TO-DO</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Edit TO-DO</legend>
+
+        @Html.HiddenFor(model => model.IdTodo)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.nameTodo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.nameTodo)
+            @Html.ValidationMessageFor(model => model.nameTodo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.descriptionTodo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.descriptionTodo)
+            @Html.ValidationMessageFor(model => model.descriptionTodo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.dateI)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.dateI)
+            @Html.ValidationMessageFor(model => model.dateI)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.dateF)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.dateF)
+            @Html.ValidationMessageFor(model => model.dateF)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.status)
+        </div>
+
+        <div class="editor-field">
+            @Html.DropDownList("statusList")
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to My TO-DO List", "MyToDo")
+</div>

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Examen3_Progra4.Models.todoEstructure>
+
+@{
+    ViewBag.Title = "My TO-DOs";
+}
+
+<h2>My TO-DOs</h2>
+@if (Model.Count() == 0)
+{
+    
+    
+    @Html.ActionLink("Create New", "Create")<br />
+
+    <div style="display:inline;">
+        @Html.Label("Filter")
+    </div>
+    <div style="display:inline; color:Red;">@ViewBag.error</div>
+    <fieldset>
+    <br />
+    @using (Html.BeginForm())
+    {
+        <div style="display:inline;">
+            @Html.Label("Start Date:")
+        </div>
+        <div style="display:inline;">@Html.Editor("DateS")</div>
+        <div style="display:inline;">
+            @Html.Label("Finish Date:")
+        </div>
+        <div style="display:inline;">@Html.Editor("DateF")</div>
+        <input type="Submit" value="Filter" />
+    }
+    </fieldset>
+   
+    <p>There isn't any TO-DO</p>
+    
+}
+else
+{
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    <div style="display:inline;">
+        @Html.Label("Filter")
+    </div>
+    <div style="display:inline; color:Red;">@ViewBag.error</div>
+    <fieldset>
+    <br />
+    @using (Html.BeginForm())
+    {
+        <div style="display:inline;">
+            @Html.Label("Start Date:")
+        </div>
+        <div style="display:inline;">@Html.Editor("DateS")</div>
+        <div style="display:inline;">
+            @Html.Label("Finish Date:")
+        </div>
+        <div style="display:inline;">@Html.Editor("DateF")</div>
+        <input type="Submit" value="Filter" />
+    }
+    </fieldset>
+    
+<table>
+    <tr>
+        
+        <th>
+            TO-DO Name
+        </th>
+        <th>
+            TO-DO Description
+        </th>
+        <th>
+            TO-DO Start Date
+        </th>
+        <th>
+            TO-DO Finish Date
+        </th>
+        <th>
+            TO-DO Status
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    
+        <tr>
+        
+            @Html.HiddenFor(modelItem => item.IdTodo)
+        <td>
+            @Html.DisplayFor(modelItem => item.nameTodo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descriptionTodo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateI)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dateF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.IdTodo }) |
+            @Html.ActionLink("Details", "Details", new { id = item.IdTodo }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.IdTodo })
+        </td>
+    </tr>
+    
+}
+
+</table>
+}

@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MyDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MyDBModelStoreContainer">
+          <EntitySet Name="meetings" EntityType="MyDBModel.Store.meetings" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="todos" EntityType="MyDBModel.Store.todos" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="users" EntityType="MyDBModel.Store.users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_meetings_users" Association="MyDBModel.Store.FK_meetings_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="meetings" EntitySet="meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_todos_users" Association="MyDBModel.Store.FK_todos_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="todos" EntitySet="todos" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="meetings">
+          <Key>
+            <PropertyRef Name="idMeet" />
+          </Key>
+          <Property Name="idMeet" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="descripcion" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="longitud" Type="float" Nullable="false" />
+          <Property Name="latitud" Type="float" Nullable="false" />
+          <Property Name="userOwner" Type="varchar" Nullable="false" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="todos">
+          <Key>
+            <PropertyRef Name="idTodo" />
+          </Key>
+          <Property Name="idTodo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="descripcion" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="fechaI" Type="date" Nullable="false" />
+          <Property Name="fechaF" Type="date" Nullable="false" />
+          <Property Name="status" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="userOwner" Type="varchar" Nullable="false" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="email" />
+          </Key>
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="150" />
+          <Property Name="password" Type="varchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_meetings_users">
+          <End Role="users" Type="MyDBModel.Store.users" Multiplicity="1" />
+          <End Role="meetings" Type="MyDBModel.Store.meetings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="meetings">
+              <PropertyRef Name="userOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_todos_users">
+          <End Role="users" Type="MyDBModel.Store.users" Multiplicity="1" />
+          <End Role="todos" Type="MyDBModel.Store.todos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="todos">
+              <PropertyRef Name="userOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MyDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MyDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="meetings" EntityType="MyDBModel.meeting" />
+          <EntitySet Name="todos" EntityType="MyDBModel.todo" />
+          <EntitySet Name="users" EntityType="MyDBModel.user" />
+          <AssociationSet Name="FK_meetings_users" Association="MyDBModel.FK_meetings_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="meetings" EntitySet="meetings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_todos_users" Association="MyDBModel.FK_todos_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="todos" EntitySet="todos" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="meeting">
+          <Key>
+            <PropertyRef Name="idMeet" />
+          </Key>
+          <Property Name="idMeet" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" />
+          <Property Name="longitud" Type="Double" Nullable="false" />
+          <Property Name="latitud" Type="Double" Nullable="false" />
+          <Property Name="userOwner" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="user" Relationship="MyDBModel.FK_meetings_users" FromRole="meetings" ToRole="users" />
+        </EntityType>
+        <EntityType Name="todo">
+          <Key>
+            <PropertyRef Name="idTodo" />
+          </Key>
+          <Property Name="idTodo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="descripcion" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="fechaI" Type="DateTime" Nullable="false" />
+          <Property Name="fechaF" Type="DateTime" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="userOwner" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="user" Relationship="MyDBModel.FK_todos_users" FromRole="todos" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="email" />
+          </Key>
+          <Property Name="email" Type="String" Nullable="false" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="meetings" Relationship="MyDBModel.FK_meetings_users" FromRole="users" ToRole="meetings" />
+          <NavigationProperty Name="todos" Relationship="MyDBModel.FK_todos_users" FromRole="users" ToRole="todos" />
+        </EntityType>
+        <Association Name="FK_meetings_users">
+          <End Role="users" Type="MyDBModel.user" Multiplicity="1" />
+          <End Role="meetings" Type="MyDBModel.meeting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="meetings">
+              <PropertyRef Name="userOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_todos_users">
+          <End Role="users" Type="MyDBModel.user" Multiplicity="1" />
+          <End Role="todos" Type="MyDBModel.todo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="email" />
+            </Principal>
+            <Dependent Role="todos">
+              <PropertyRef Name="userOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MyDBModelStoreContainer" CdmEntityContainer="MyDBEntities">
+          <EntitySetMapping Name="meetings">
+            <EntityTypeMapping TypeName="MyDBModel.meeting">
+              <MappingFragment StoreEntitySet="meetings">
+                <ScalarProperty Name="idMeet" ColumnName="idMeet" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="longitud" ColumnName="longitud" />
+                <ScalarProperty Name="latitud" ColumnName="latitud" />
+                <ScalarProperty Name="userOwner" ColumnName="userOwner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="todos">
+            <EntityTypeMapping TypeName="MyDBModel.todo">
+              <MappingFragment StoreEntitySet="todos">
+                <ScalarProperty Name="idTodo" ColumnName="idTodo" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="fechaI" ColumnName="fechaI" />
+                <ScalarProperty Name="fechaF" ColumnName="fechaF" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="userOwner" ColumnName="userOwner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="MyDBModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model1">
+        <EntityTypeShape EntityType="MyDBModel.meeting" Width="1.5" PointX="3" PointY="1.125" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyDBModel.todo" Width="1.5" PointX="3" PointY="4.375" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyDBModel.user" Width="1.5" PointX="0.75" PointY="3.125" Height="1.7879850260416657" IsExpanded="true" />
+        <AssociationConnector Association="MyDBModel.FK_meetings_users" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="3.4035953776041667" />
+          <ConnectorPoint PointX="3" PointY="3.4035953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="MyDBModel.FK_todos_users" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.6439925130208328" />
+          <ConnectorPoint PointX="3" PointY="4.6439925130208328" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

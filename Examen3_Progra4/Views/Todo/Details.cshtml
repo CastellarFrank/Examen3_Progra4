@@ -1,0 +1,45 @@
+﻿@model Examen3_Progra4.Models.todoEstructure
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>TO-DO Details</legend>
+
+    
+        @Html.HiddenFor(model => model.IdTodo)
+    
+
+    <div class="display-label">TO-DO Name:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nameTodo)
+    </div>
+
+    <div class="display-label">TO-DO Description:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.descriptionTodo)
+    </div>
+
+    <div class="display-label">TO-DO Start Date:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dateI)
+    </div>
+
+    <div class="display-label">TO-DO Finish Date:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.dateF)
+    </div>
+
+    <div class="display-label">TO-DO Status:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.status)
+    </div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.IdTodo}) |
+    @Html.ActionLink("Back to My TO-DO List", "MyToDo")
+</p>

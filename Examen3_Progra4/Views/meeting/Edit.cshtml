@@ -1,0 +1,111 @@
+﻿@model Examen3_Progra4.Models.meetingStructure
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Meeting</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAuPsJpk3MBtDpJ4G8cqBnjRRaGTYH6UMl8mADNa0YKuWNNa8VNxQCzVBXTx2DYyXGsTOxpWhvIG7Djw" type="text/javascript"></script>
+@{ 
+    /*@cc_on @*/
+  var latit = Model.meetLatitude;
+  var lengt = Model.meetLength;
+}
+<script>
+    var map = null;
+    var geocoder = null;
+    var marker = null;
+    function initialize() {
+        if (GBrowserIsCompatible()) {
+            map = new GMap2(document.getElementById("map_canvas"));
+            var length = [@lengt];
+            var latitude=[@latit];
+            var point = new GLatLng(length, latitude);
+            map.setCenter(point, 13);
+            document.getElementById("meetLength").value = point.y;
+            document.getElementById("meetLatitude").value = point.x;
+            marker = new GMarker(point);
+            map.addOverlay(marker);
+
+            GEvent.addListener(map, "click", function (overlay, latlng) {
+                if (marker)
+                    map.removeOverlay(marker);
+                marker = new GMarker(latlng);
+                map.addOverlay(marker);
+                var myHtml = "This is the new Location";
+                map.openInfoWindow(latlng, myHtml);
+                document.getElementById("meetLength").value = latlng.y;
+                document.getElementById("meetLatitude").value = latlng.x;
+            });
+            map.addControl(new GSmallMapControl());
+            map.addControl(new GMapTypeControl());
+        }
+    }
+
+
+    $(document).ready(function () {
+        initialize();
+    });
+</script>
+
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Meeting Info</legend>
+
+            @Html.HiddenFor(model => model.meetId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.meetName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.meetName)
+            @Html.ValidationMessageFor(model => model.meetName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.meetDescription)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.meetDescription)
+            @Html.ValidationMessageFor(model => model.meetDescription)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.meetDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.meetDate)
+            @Html.ValidationMessageFor(model => model.meetDate)
+        </div>
+        <br />
+        <div id="map_canvas" style="width: 650px; height: 300px"></div>
+        <br />
+        <div class="editor-label" style="display:inline;">
+            @Html.LabelFor(model => model.meetLength):
+        </div>
+        <div class="editor-field" style="display:inline;">
+            @Html.TextBoxFor(model => model.meetLength, new { @readonly = "readonly" })
+        </div>
+
+        <div class="editor-label"style="display:inline;">
+            @Html.LabelFor(model => model.meetLatitude):
+        </div>
+        <div class="editor-field" style="display:inline;">
+            @Html.TextBoxFor(model => model.meetLatitude, new { @readonly = "readonly" })
+        </div>
+
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to My Meetings List", "MyMeetings")
+</div>

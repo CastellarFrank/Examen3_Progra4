@@ -1,0 +1,78 @@
+﻿@model Examen3_Progra4.Models.meetingStructure
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Show Meeting Details</h2>
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAuPsJpk3MBtDpJ4G8cqBnjRRaGTYH6UMl8mADNa0YKuWNNa8VNxQCzVBXTx2DYyXGsTOxpWhvIG7Djw" type="text/javascript"></script>
+
+@{ 
+    /*@cc_on @*/
+  var latit = Model.meetLatitude;
+  var lengt = Model.meetLength;
+}
+
+<script>
+    var map = null;
+    var geocoder = null;
+    var marker = null;
+    function initialize() {
+        if (GBrowserIsCompatible()) {
+            map = new GMap2(document.getElementById("map_canvas"));
+            var length=[@lengt];
+            var latitud=[@latit];
+            var point = new GLatLng(length, latitud);
+            map.setCenter(point, 13);
+            marker = new GMarker(point);
+            map.addOverlay(marker);
+            map.addControl(new GSmallMapControl());
+            map.addControl(new GMapTypeControl());
+        }
+    }
+
+    $(document).ready(function () {
+        initialize();
+    });
+</script>
+
+<fieldset>
+    <legend>Meeting Info</legend>
+
+    
+        @Html.HiddenFor(model => model.meetId)
+    
+
+    <div class="display-label">Meeting Name:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.meetName)
+    </div>
+
+    <div class="display-label">Meeting Description:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.meetDescription)
+    </div>
+
+    <div class="display-label">Meeting Date:</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.meetDate)
+    </div>
+    <br />
+        <div id="map_canvas" style="width: 650px; height: 300px"></div>
+    <br />
+    <div class="display-label" style="display:inline">Length:</div>
+    <div class="display-field" style="display:inline">
+        @Html.DisplayFor(model => model.meetLength)
+    </div>
+
+    &nbsp;&nbsp;<div class="display-label"style="display:inline">Latitude:</div>
+    <div class="display-field" style="display:inline">
+        @Html.DisplayFor(model => model.meetLatitude)
+    </div>
+    
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id=Model.meetId }) |
+    @Html.ActionLink("Back to My Meetings List", "MyMeetings")
+</p>

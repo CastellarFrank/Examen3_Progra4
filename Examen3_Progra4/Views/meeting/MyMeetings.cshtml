@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Examen3_Progra4.Models.meetingStructure>
+
+@{
+    ViewBag.Title = "MyMeetings";
+}
+
+<h2>My Meetings</h2>
+@if (Model.Count() == 0)
+{
+    <p>You don't have any Meeting</p>
+    
+    @Html.ActionLink("Create New", "Create")
+}
+else
+{
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        
+        <th>
+            Meeting Name
+        </th>
+        <th>
+            Meeting Description
+        </th>
+        <th>
+            Meeting Date
+        </th>
+        <th>
+            Meeting Length
+        </th>
+        <th>
+            Meeting Latitude
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+            @Html.HiddenFor(modelItem => item.meetId)
+            
+        <td>
+            @Html.DisplayFor(modelItem => item.meetName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.meetDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.meetDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.meetLength)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.meetLatitude)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.meetId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.meetId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.meetId })
+        </td>
+    </tr>
+}
+
+</table>
+}
